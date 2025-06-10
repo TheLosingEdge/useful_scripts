@@ -1,31 +1,35 @@
-#!/usr/bin/python
-import sys, socket
+#!/usr/bin/env python3
+"""Resolve hostnames from a file into their IP addresses."""
+
+import socket
+import sys
 
 
-print ("\n")
-filename = raw_input("Enter input file> ")
+def main() -> None:
+    print()
+    filename = input("Enter input file> ")
 
-try:
+    try:
+        infile = open(filename)
+    except OSError as e:
+        print(e)
+        sys.exit(1)
 
-	infile = open(filename)
-	
-except EnvironmentError as e:
-    print(e)
-    sys.exit(1)
+    print(f"\nFile {filename} exists!")
+    print("\nGetting IP addresses for hosts\n")
 
-print("\nFile {} exists!".format(filename))
-print("\nGetting IP addresses for hosts")
-print("\n")
+    for line in infile:
+        hostname = line.strip()
+        try:
+            ipaddr = socket.gethostbyname(hostname)
+            print(ipaddr)
+        except socket.gaierror as e:
+            print(f"Couldn't find IP address for {hostname}: {e}")
+            continue
 
-for line in infile:
-	hostname = line.strip()
-	try:
-		ipaddr =  socket.gethostbyname(hostname)
-		print ipaddr
-	except EnvironmentError as e:
-		print ("Couldn't find IP address for {}: {}".format(hostname, e))
-		continue
-else:
-		infile.close()
-		print ("\nFinished the operation")
-		
+    infile.close()
+    print("\nFinished the operation")
+
+
+if __name__ == "__main__":
+    main()
