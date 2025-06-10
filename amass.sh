@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 # $1 => example.domain
 # Requires https://github.com/tomnomnom/hacks/tree/master/filter-resolved
 # Requires jq
